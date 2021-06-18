@@ -1,0 +1,18 @@
+#loading,#results {
+    display:none;
+}
+.alert-danger {
+    background-color: #FCCCCB;
+    color: #ec6d46;
+}
+.card {
+    box-shadow: 5px 5px 5px #aaaaaa;
+}
+body {
+    font-family: "Consolos";
+    background-color: #f8f8ff;
+}
+hr{
+    width: 20%;
+    border-top: solid #aaaaaa 2px;
+}
