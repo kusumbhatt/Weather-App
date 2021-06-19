@@ -1,7 +1,8 @@
+import {http} from './http.js';
+
 const loader = document.querySelector('#loading');
 const result = document.querySelector('#results');
-
-const http = new HTTP();
+const input = document.querySelector('#input')
 
 document.getElementById('weather-form').addEventListener('submit', function(e) {
     loader.style.display='block';
@@ -11,17 +12,24 @@ document.getElementById('weather-form').addEventListener('submit', function(e) {
 
 document.getElementById('reset').addEventListener('click', reset);
 
-// Show error
 function showError(error) {
+
     clearError();
-    loader.style.display = 'none';
+    input.disabled = true;
+    loader.style.display = 'none';  
+
     const errorDiv = document.createElement('div');
     const card = document.querySelector('.card');
     const heading = document.querySelector('.heading');
     errorDiv.className = 'alert alert-danger';
     errorDiv.appendChild(document.createTextNode(error));
     card.insertBefore(errorDiv, heading);
-    setTimeout(clearError, 3000);
+
+    setTimeout(() => {
+        clearError();
+        input.value = '';
+        input.disabled = false;
+    }, 2000);
 }
 
 function clearError() {
@@ -30,22 +38,33 @@ function clearError() {
 }
 
 function showWeather(location, comment, temperature, feelslike) {
+
     loader.style.display = 'none';
     result.style.display = 'block';
-    document.querySelector('#input').disabled = 'true';
+    input.disabled = true;
+
     document.querySelector('#location').value = location;
     comment = "It is " + comment + " day. Current Temperature: " + temperature + ". It feelslike " + feelslike ;
     document.querySelector('#description').value = comment;
 }
 
 function reset(e) {
+
     e.preventDefault();
-    window.location.reload();
+    loader.style.display = 'block';
+    result.style.display = 'none';
+
+    setTimeout(() => {
+        input.value = '';
+        input.disabled = false;
+        loader.style.display = 'none';
+    }, 1000);
 }
 
 //Calculate Results
 function findWeather() {
-    const address = document.querySelector('#input').value;
+    
+    const address = input.value;
     if(address) {
         const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+ encodeURIComponent(address) + ".json?proximity=-74.70850,40.78375&access_token=pk.eyJ1Ijoia3VzdW1iaGF0dCIsImEiOiJja3EwNm9zYmswMXgxMm9vMWU5djBtdGhzIn0.DgD_WbuyJXiZHO17qzu4hw";
         http.get(url)

@@ -41,3 +41,4 @@ class HTTP {
         return data;
     }
 }
+export const http = new HTTP();
